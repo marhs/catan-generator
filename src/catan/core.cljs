@@ -11,6 +11,8 @@
 (def monet-canvas (canvas/init canvas-dom "2d"))
 
 ; Constants
+(def tiles-width 5)
+(def tiles-height 5)
 (def base-state {:x 100 :y 100 :h 600 :w 600})
 (def tile-size 50)
 (def width (* 2 tile-size))
@@ -23,24 +25,34 @@
    :wood "#298e49"
    :sea "#29738e"})
 
+;;;; Models ;;;;
+
 (def catania
-  {:tiles
-   (list
-    {:name :c1 :i 0 :j 0 :terrain :sea}
-    {:name :c2 :i 0 :j 1 :terrain :sea}
-    {:name :c3 :i 0 :j 3 :terrain :wood}
-    {:name :c4 :i 1 :j 0 :terrain :clay}
-    {:name :c5 :i 1 :j 1 :terrain :sheep}
-    {:name :c6 :i 1 :j 2 :terrain :sea}
-    {:name :c7 :i 1 :j 3 :terrain :sea}
-    {:name :c8 :i 2 :j 0 :terrain :sea}
-    {:name :c9 :i 2 :j 1 :terrain :wheat}
-    {:name :c10 :i 2 :j 2 :terrain :wood}
-    {:name :c11 :i 2 :j 3 :terrain :rock}
-    {:name :c12 :i 3 :j 0 :terrain :rock}
-    {:name :c13 :i 3 :j 1 :terrain :sea}
-    {:name :c14 :i 3 :j 2 :terrain :sea}
-    {:name :c15 :i 3 :j 3 :terrain :sea})})
+  {1 {:name :1 :i 2 :j 0 :terrain :wood}
+
+   2 {:name :2 :i 0 :j 1 :terrain :rock}
+   3 {:name :3 :i 1 :j 1 :terrain :rock}
+   4 {:name :4 :i 2 :j 1 :terrain :rock}
+   5 {:name :5 :i 3 :j 1 :terrain :rock}
+   6 {:name :6 :i 4 :j 1 :terrain :rock}
+
+   7 {:name :7 :i 0 :j 2 :terrain :clay}
+   8 {:name :8 :i 1 :j 2 :terrain :clay}
+   9 {:name :9 :i 2 :j 2 :terrain :clay}
+   10 {:name :10 :i 3 :j 2 :terrain :clay}
+   11 {:name :11 :i 4 :j 2 :terrain :clay}
+
+   12 {:name :12 :i 0 :j 3 :terrain :wheat}
+   13 {:name :13 :i 1 :j 3 :terrain :wheat}
+   14 {:name :14 :i 2 :j 3 :terrain :wheat}
+   15 {:name :15 :i 3 :j 3 :terrain :wheat}
+   16 {:name :16 :i 4 :j 3 :terrain :wheat}
+
+   17 {:name :17 :i 1 :j 4 :terrain :sheep}
+   18 {:name :18 :i 2 :j 4 :terrain :sheep}
+   19 {:name :19 :i 3 :j 4 :terrain :sheep}
+
+   })
 
 (defn random-generator
   [w h]
@@ -52,12 +64,9 @@
      :terrain (rand-nth (keys colours))}))
 
 (def catanio
-  {:tiles (random-generator 10 10)})
-(doall (map #(.log js/console %1) (random-generator 2 2)))
+  {:tiles (random-generator tiles-height tiles-width)})
 
-(random-generator 4 4)
-
-;(.log js/console (hex-corner 100 100 100 0))
+;;;;; Views ;;;;;
 
 (defn hex-corner
   "Given a center and a size, return corner coordinates"
@@ -82,7 +91,7 @@
         x (+ size (* h1 i))]
     [x y]))
 
-(defn create-hexagon
+(defn draw-hexagon
   [{hexagon-name :name i :i j :j terrain :terrain} size state canvas]
   (let [col-hex (terrain colours)
         [x y] (coords->pixels i j size)]
@@ -105,11 +114,11 @@
                                             (canvas/close-path)
                                             (canvas/fill)))))))
 
-;(create-hexagon (first (:tiles catania)) 100 base-state monet-canvas)
+;(draw-hexagon (first (:tiles catania)) 100 base-state monet-canvas)
 (doall
   (map
-    (fn [x] (create-hexagon x tile-size base-state monet-canvas))
-    (:tiles catanio)))
+    (fn [x] (draw-hexagon x tile-size base-state monet-canvas))
+    (vals catania)))
 
 ;(canvas/add-entity{:i 0 :j 0 :terrain :wood} monet-canvas :c1
-                   ;(create-hexagon (coords->pixels 0 0 100) 100 :wood base-state))
+                   ;(draw-hexagon (coords->pixels 0 0 100) 100 :wood base-state))
