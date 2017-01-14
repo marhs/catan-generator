@@ -14,7 +14,7 @@
 (def tiles-width 7)
 (def tiles-height 7)
 (def base-state {:x 100 :y 100 :h 600 :w 600})
-(def tile-size 50)
+(def tile-size 75)
 (def width (* 2 tile-size))
 (def height (* width (/ 3 4)))
 (def colours
@@ -28,37 +28,63 @@
 
 ;;;; Models ;;;;
 
+(def tile-places
+  [{:i 2 :j 1}
+   {:i 3 :j 1}
+   {:i 4 :j 1}
+   {:i 1 :j 2}
+   {:i 2 :j 2}
+   {:i 3 :j 2}
+   {:i 4 :j 2}
+   {:i 5 :j 2}
+   {:i 1 :j 3}
+   {:i 2 :j 3}
+   {:i 3 :j 3}
+   {:i 4 :j 3}
+   {:i 5 :j 3}
+   {:i 1 :j 4}
+   {:i 2 :j 4}
+   {:i 3 :j 4}
+   {:i 4 :j 4}
+   {:i 5 :j 4}
+   {:i 3 :j 5}])
+
 (def tiles
-  {1 {:name :1 :i 2 :j 1 :terrain :desert}
-   2 {:name :2 :i 3 :j 1 :terrain :grain}
-   3 {:name :3 :i 4 :j 1 :terrain :grain}
+  { 1 {:name  :1 :terrain :desert}
+    2 {:name  :2 :terrain :grain}
+    3 {:name  :3 :terrain :grain}
 
-   4 {:name :4 :i 1 :j 2 :terrain :grain}
-   5 {:name :5 :i 2 :j 2 :terrain :grain}
-   6 {:name :6 :i 3 :j 2 :terrain :forest}
-   7 {:name :7 :i 4 :j 2 :terrain :forest}
-   8 {:name :8 :i 5 :j 2 :terrain :forest}
+    4 {:name  :4 :terrain :grain}
+    5 {:name  :5 :terrain :grain}
+    6 {:name  :6 :terrain :forest}
+    7 {:name  :7 :terrain :forest}
+    8 {:name  :8 :terrain :forest}
 
-   9 {:name :9 :i 1 :j 3 :terrain :forest}
-   10 {:name :10 :i 2 :j 3 :terrain :pasture}
-   11 {:name :11 :i 3 :j 3 :terrain :pasture}
-   12 {:name :12 :i 4 :j 3 :terrain :pasture}
-   13 {:name :13 :i 5 :j 3 :terrain :pasture}
+    9 {:name  :9 :terrain :forest}
+   10 {:name :10 :terrain :pasture}
+   11 {:name :11 :terrain :pasture}
+   12 {:name :12 :terrain :pasture}
+   13 {:name :13 :terrain :pasture}
 
-   14 {:name :14 :i 1 :j 4 :terrain :rock}
-   15 {:name :15 :i 2 :j 4 :terrain :rock}
-   16 {:name :16 :i 3 :j 4 :terrain :rock}
-   17 {:name :17 :i 4 :j 4 :terrain :brick}
-   18 {:name :18 :i 5 :j 4 :terrain :brick}
+   14 {:name :14 :terrain :rock}
+   15 {:name :15 :terrain :rock}
+   16 {:name :16 :terrain :rock}
+   17 {:name :17 :terrain :brick}
+   18 {:name :18 :terrain :brick}
 
-   19 {:name :19 :i 3 :j 5 :terrain :brick}
-
+   19 {:name :19 :terrain :brick}
    })
+
+(def randomize-tiles
+  (let [p (shuffle tile-places)
+        t (vals tiles)
+        vs (map merge p t)]
+    (reduce (fn [acc [k v]] (assoc acc k v))
+            {}
+            (map-indexed vector vs))))
 
 (def places
   (map (fn [x] '((:i x) (:j x))) (vals tiles)))
-
-(.log js/console places)
 
 (defn random-generator
   [w h]
@@ -130,4 +156,4 @@
       (vals board-tiles))))
 
 (draw-tiles board)
-(draw-tiles tiles)
+(draw-tiles randomize-tiles)
