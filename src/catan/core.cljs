@@ -12,7 +12,7 @@
 
 ; Constants
 (def base-state {:x 100 :y 100 :h 600 :w 600})
-(def tile-size 100)
+(def tile-size 50)
 (def width (* 2 tile-size))
 (def height (* width (/ 3 4)))
 (def colours
@@ -108,7 +108,7 @@
 ;(create-hexagon (first (:tiles catania)) 100 base-state monet-canvas)
 (doall
   (map
-    (fn [x] (create-hexagon x 75 base-state monet-canvas))
+    (fn [x] (create-hexagon x tile-size base-state monet-canvas))
     (:tiles catanio)))
 
 ;(canvas/add-entity{:i 0 :j 0 :terrain :wood} monet-canvas :c1
