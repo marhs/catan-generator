@@ -12,8 +12,8 @@
 
 ; Constants
 (def base-state {:x 100 :y 100 :h 600 :w 600})
-(def size 100)
-(def width (* 2 size))
+(def tile-size 100)
+(def width (* 2 tile-size))
 (def height (* width (/ 3 4)))
 (def colours
   {:rock "#777777"
@@ -41,6 +41,21 @@
     {:name :c13 :i 3 :j 1 :terrain :sea}
     {:name :c14 :i 3 :j 2 :terrain :sea}
     {:name :c15 :i 3 :j 3 :terrain :sea})})
+
+(defn random-generator
+  [w h]
+  (for [x (range 0 w)
+        y (range 0 h)]
+    {:name (str x "." y)
+     :i x
+     :j y
+     :terrain (rand-nth (keys colours))}))
+
+(def catanio
+  {:tiles (random-generator 10 10)})
+(doall (map #(.log js/console %1) (random-generator 2 2)))
+
+(random-generator 4 4)
 
 ;(.log js/console (hex-corner 100 100 100 0))
 
@@ -94,7 +109,7 @@
 (doall
   (map
     (fn [x] (create-hexagon x 75 base-state monet-canvas))
-    (:tiles catania)))
+    (:tiles catanio)))
 
 ;(canvas/add-entity{:i 0 :j 0 :terrain :wood} monet-canvas :c1
                    ;(create-hexagon (coords->pixels 0 0 100) 100 :wood base-state))
