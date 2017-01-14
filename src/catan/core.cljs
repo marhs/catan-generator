@@ -19,38 +19,39 @@
 (def height (* width (/ 3 4)))
 (def colours
   {:rock "#777777"
-   :clay "#d36332"
-   :sheep "#72af21"
-   :wheat "#fce84e"
-   :wood "#298e49"
+   :brick "#d36332"
+   :pasture "#72af21"
+   :grain "#fce84e"
+   :forest "#298e49"
+   :desert "#ffe3a3"
    :sea "#29738e"})
 
 ;;;; Models ;;;;
 
 (def catania
-  {1 {:name :1 :i 2 :j 0 :terrain :wood}
+  {1 {:name :1 :i 2 :j 0 :terrain :desert}
 
-   2 {:name :2 :i 0 :j 1 :terrain :rock}
-   3 {:name :3 :i 1 :j 1 :terrain :rock}
-   4 {:name :4 :i 2 :j 1 :terrain :rock}
-   5 {:name :5 :i 3 :j 1 :terrain :rock}
-   6 {:name :6 :i 4 :j 1 :terrain :rock}
+   2 {:name :2 :i 0 :j 1 :terrain :grain}
+   3 {:name :3 :i 1 :j 1 :terrain :grain}
+   4 {:name :4 :i 2 :j 1 :terrain :grain}
+   5 {:name :5 :i 3 :j 1 :terrain :grain}
+   6 {:name :6 :i 4 :j 1 :terrain :forest}
 
-   7 {:name :7 :i 0 :j 2 :terrain :clay}
-   8 {:name :8 :i 1 :j 2 :terrain :clay}
-   9 {:name :9 :i 2 :j 2 :terrain :clay}
-   10 {:name :10 :i 3 :j 2 :terrain :clay}
-   11 {:name :11 :i 4 :j 2 :terrain :clay}
+   7 {:name :7 :i 0 :j 2 :terrain :forest}
+   8 {:name :8 :i 1 :j 2 :terrain :forest}
+   9 {:name :9 :i 2 :j 2 :terrain :forest}
+   10 {:name :10 :i 3 :j 2 :terrain :pasture}
+   11 {:name :11 :i 4 :j 2 :terrain :pasture}
 
-   12 {:name :12 :i 0 :j 3 :terrain :wheat}
-   13 {:name :13 :i 1 :j 3 :terrain :wheat}
-   14 {:name :14 :i 2 :j 3 :terrain :wheat}
-   15 {:name :15 :i 3 :j 3 :terrain :wheat}
-   16 {:name :16 :i 4 :j 3 :terrain :wheat}
+   12 {:name :12 :i 0 :j 3 :terrain :pasture}
+   13 {:name :13 :i 1 :j 3 :terrain :pasture}
+   14 {:name :14 :i 2 :j 3 :terrain :rock}
+   15 {:name :15 :i 3 :j 3 :terrain :rock}
+   16 {:name :16 :i 4 :j 3 :terrain :rock}
 
-   17 {:name :17 :i 1 :j 4 :terrain :sheep}
-   18 {:name :18 :i 2 :j 4 :terrain :sheep}
-   19 {:name :19 :i 3 :j 4 :terrain :sheep}
+   17 {:name :17 :i 1 :j 4 :terrain :brick}
+   18 {:name :18 :i 2 :j 4 :terrain :brick}
+   19 {:name :19 :i 3 :j 4 :terrain :brick}
 
    })
 
@@ -120,5 +121,5 @@
     (fn [x] (draw-hexagon x tile-size base-state monet-canvas))
     (vals catania)))
 
-;(canvas/add-entity{:i 0 :j 0 :terrain :wood} monet-canvas :c1
-                   ;(draw-hexagon (coords->pixels 0 0 100) 100 :wood base-state))
+;(canvas/add-entity{:i 0 :j 0 :terrain :forest} monet-canvas :c1
+                   ;(draw-hexagon (coords->pixels 0 0 100) 100 :forest base-state))
