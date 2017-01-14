@@ -11,8 +11,8 @@
 (def monet-canvas (canvas/init canvas-dom "2d"))
 
 ; Constants
-(def tiles-width 5)
-(def tiles-height 5)
+(def tiles-width 7)
+(def tiles-height 7)
 (def base-state {:x 100 :y 100 :h 600 :w 600})
 (def tile-size 50)
 (def width (* 2 tile-size))
@@ -28,32 +28,37 @@
 
 ;;;; Models ;;;;
 
-(def catania
-  {1 {:name :1 :i 2 :j 0 :terrain :desert}
+(def tiles
+  {1 {:name :1 :i 2 :j 1 :terrain :desert}
+   2 {:name :2 :i 3 :j 1 :terrain :grain}
+   3 {:name :3 :i 4 :j 1 :terrain :grain}
 
-   2 {:name :2 :i 0 :j 1 :terrain :grain}
-   3 {:name :3 :i 1 :j 1 :terrain :grain}
-   4 {:name :4 :i 2 :j 1 :terrain :grain}
-   5 {:name :5 :i 3 :j 1 :terrain :grain}
-   6 {:name :6 :i 4 :j 1 :terrain :forest}
+   4 {:name :4 :i 1 :j 2 :terrain :grain}
+   5 {:name :5 :i 2 :j 2 :terrain :grain}
+   6 {:name :6 :i 3 :j 2 :terrain :forest}
+   7 {:name :7 :i 4 :j 2 :terrain :forest}
+   8 {:name :8 :i 5 :j 2 :terrain :forest}
 
-   7 {:name :7 :i 0 :j 2 :terrain :forest}
-   8 {:name :8 :i 1 :j 2 :terrain :forest}
-   9 {:name :9 :i 2 :j 2 :terrain :forest}
-   10 {:name :10 :i 3 :j 2 :terrain :pasture}
-   11 {:name :11 :i 4 :j 2 :terrain :pasture}
+   9 {:name :9 :i 1 :j 3 :terrain :forest}
+   10 {:name :10 :i 2 :j 3 :terrain :pasture}
+   11 {:name :11 :i 3 :j 3 :terrain :pasture}
+   12 {:name :12 :i 4 :j 3 :terrain :pasture}
+   13 {:name :13 :i 5 :j 3 :terrain :pasture}
 
-   12 {:name :12 :i 0 :j 3 :terrain :pasture}
-   13 {:name :13 :i 1 :j 3 :terrain :pasture}
-   14 {:name :14 :i 2 :j 3 :terrain :rock}
-   15 {:name :15 :i 3 :j 3 :terrain :rock}
-   16 {:name :16 :i 4 :j 3 :terrain :rock}
+   14 {:name :14 :i 1 :j 4 :terrain :rock}
+   15 {:name :15 :i 2 :j 4 :terrain :rock}
+   16 {:name :16 :i 3 :j 4 :terrain :rock}
+   17 {:name :17 :i 4 :j 4 :terrain :brick}
+   18 {:name :18 :i 5 :j 4 :terrain :brick}
 
-   17 {:name :17 :i 1 :j 4 :terrain :brick}
-   18 {:name :18 :i 2 :j 4 :terrain :brick}
-   19 {:name :19 :i 3 :j 4 :terrain :brick}
+   19 {:name :19 :i 3 :j 5 :terrain :brick}
 
    })
+
+(def places
+  (map (fn [x] '((:i x) (:j x))) (vals tiles)))
+
+(.log js/console places)
 
 (defn random-generator
   [w h]
@@ -62,10 +67,12 @@
     {:name (str x "." y)
      :i x
      :j y
-     :terrain (rand-nth (keys colours))}))
+     :terrain :sea}))
 
-(def catanio
-  {:tiles (random-generator tiles-height tiles-width)})
+(def board
+  (reduce (fn [acc x] (assoc acc (str (:i x) "-" (:j x)) x))
+          {}
+          (random-generator tiles-height tiles-width)))
 
 ;;;;; Views ;;;;;
 
@@ -115,11 +122,15 @@
                                             (canvas/close-path)
                                             (canvas/fill)))))))
 
-;(draw-hexagon (first (:tiles catania)) 100 base-state monet-canvas)
-(doall
-  (map
-    (fn [x] (draw-hexagon x tile-size base-state monet-canvas))
-    (vals catania)))
+;(draw-hexagon (first (:tiles tiles)) 100 base-state monet-canvas)
+(defn draw-tiles
+  [board-tiles]
+  (doall
+    (map
+      (fn [x] (draw-hexagon x tile-size base-state monet-canvas))
+      (vals board-tiles))))
 
+(draw-tiles board)
+(draw-tiles tiles)
 ;(canvas/add-entity{:i 0 :j 0 :terrain :forest} monet-canvas :c1
                    ;(draw-hexagon (coords->pixels 0 0 100) 100 :forest base-state))
