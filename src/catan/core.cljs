@@ -122,7 +122,6 @@
                                             (canvas/close-path)
                                             (canvas/fill)))))))
 
-;(draw-hexagon (first (:tiles tiles)) 100 base-state monet-canvas)
 (defn draw-tiles
   [board-tiles]
   (doall
@@ -132,5 +131,3 @@
 
 (draw-tiles board)
 (draw-tiles tiles)
-;(canvas/add-entity{:i 0 :j 0 :terrain :forest} monet-canvas :c1
-                   ;(draw-hexagon (coords->pixels 0 0 100) 100 :forest base-state))
